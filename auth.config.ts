@@ -8,15 +8,15 @@ export const authConfig = {
     authorized: async ({ auth, request: { nextUrl } }) => {
       const isLoggedIn = !!auth?.user;
       const isOnSignup = nextUrl.pathname.startsWith("/signup");
-      const isOnLogIn = nextUrl.pathname.startsWith("/login");
+      const isOnMyNotes = nextUrl.pathname.includes("/my-notes");
       if (isOnSignup && !isLoggedIn) {
         return true;
       }
-      if (!isOnSignup && !isOnLogIn) {
+      if (isOnMyNotes) {
         if (isLoggedIn) return true;
-        return Response.redirect(new URL("/login", nextUrl));
+        return false;
       } else if (isLoggedIn) {
-        return Response.redirect(new URL("/", nextUrl));
+        return Response.redirect(new URL("/my-notes", nextUrl));
       }
       return true;
     },
