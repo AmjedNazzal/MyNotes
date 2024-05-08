@@ -83,9 +83,11 @@ export default function SignupForm() {
     const res = await signUp(undefined, formData);
     setErrorToShow(res);
     setIsPending(false);
-    setTimeout(() => {
-      router.push("/login");
-    }, 2000);
+    if (res === "Registered successfully") {
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    }
   };
   return (
     <>

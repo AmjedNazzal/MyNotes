@@ -187,30 +187,30 @@ export async function signUp(
       if (isEmailAlreadyExist) {
         return "Email already exists!";
       }
-      if (password === confirmPassword) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const userData = {
-          email: email,
-          password: hashedPassword,
-          isNewFirstLogin: true,
-          pwdrectkn: "",
-        };
-
-        const newUser = await users.create(userData);
-
-        const newNote = await notes.create({
-          title: "New note",
-          description: "Note Content",
-          author: `${newUser._id}`,
-        });
-
-        newUser.notes.push(newNote._id);
-        newUser.save();
-
-        return "Registered successfully";
-      } else {
+      if (password !== confirmPassword) {
         return "Make sure your password confirmation matches the new password you have set!";
       }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const userData = {
+        email: email,
+        password: hashedPassword,
+        isNewFirstLogin: true,
+        pwdrectkn: "",
+      };
+
+      const newUser = await users.create(userData);
+
+      const newNote = await notes.create({
+        title: "New note",
+        description: "Note Content",
+        author: `${newUser._id}`,
+      });
+
+      newUser.notes.push(newNote._id);
+      newUser.save();
+
+      return "Registered successfully";
     }
   } catch (error) {
     if (error instanceof AuthError) {
