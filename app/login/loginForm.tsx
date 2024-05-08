@@ -11,6 +11,8 @@ export default function LoginForm() {
   const pathname = usePathname();
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
   useEffect(() => {
+    console.log("we are on login page");
+    console.log("Pathname: ", pathname);
     if (!pathname.startsWith("/login")) {
       router.push("/login");
     }
