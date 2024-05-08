@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, FormEvent } from "react";
-import { signUp } from "../lib/actions";
+import { signUp } from "@/lib/actions";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function SignupForm() {

@@ -3,8 +3,8 @@ import Link from "next/link";
 import { PlusCircle, TrashIcon, EditIcon } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { fetchNotes, DeleteNote, MarkTutorialDone } from "../lib/actions";
-import Tutorial from "../(components)/tutorial";
+import { fetchNotes, DeleteNote, MarkTutorialDone } from "@/lib/actions";
+import Tutorial from "@/(components)/tutorial";
 import { MoveRightIcon } from "lucide-react";
 
 interface Note {

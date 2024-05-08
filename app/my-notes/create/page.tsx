@@ -1,7 +1,7 @@
 "use client";
-import CrudForm from "../../(components)/form";
+import CrudForm from "@/(components)/form";
 import { useRouter } from "next/navigation";
-import { addNewNote } from "../../lib/actions";
+import { addNewNote } from "@/lib/actions";
 
 interface FormData {
   title: string;

@@ -1,8 +1,8 @@
 "use client";
-import CrudForm from "@/app/(components)/form";
+import CrudForm from "@/(components)/form";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { fetchSingleNote, UpdateNote } from "@/app/lib/actions";
+import { fetchSingleNote, UpdateNote } from "@/lib/actions";
 
 interface Params {
   id: string;

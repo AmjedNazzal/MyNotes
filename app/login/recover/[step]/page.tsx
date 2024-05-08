@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { sendEmailRecovery, resetPassword } from "../../../lib/actions";
+import { sendEmailRecovery, resetPassword } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 
 interface SearchParams {
