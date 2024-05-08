@@ -1,20 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
 import { authenticate } from "../lib/actions";
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
 
 export default function LoginForm() {
-  const router = useRouter();
-  const pathname = usePathname();
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
-  useEffect(() => {
-    if (!pathname.startsWith("/login")) {
-      router.push("/login");
-    }
-  }, [pathname, router]);
   return (
     <>
       <main className="flex justify-center items-center flex-col gap-[20px] w-full pt-20">

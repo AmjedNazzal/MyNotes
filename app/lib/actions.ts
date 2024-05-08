@@ -4,7 +4,7 @@ import { signIn, signOut, auth } from "../../auth";
 import { AuthError } from "next-auth";
 import { z } from "zod";
 import bcrypt from "bcrypt";
-import { users, notes } from "@/app/(models)/DB";
+import { users, notes } from "../(models)/DB";
 import * as nodemailer from "nodemailer";
 import { v4 as uuidv4 } from "uuid";
 import { Schema } from "mongoose";
@@ -119,6 +119,7 @@ export async function authenticate(
 ) {
   try {
     await signIn("credentials", formData);
+    console.log("signed in");
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {

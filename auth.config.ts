@@ -8,7 +8,7 @@ export const authConfig = {
     authorized: async ({ auth, request: { nextUrl } }) => {
       const isLoggedIn = !!auth?.user;
       const isOnSignup = nextUrl.pathname.startsWith("/signup");
-      const isOnMyNotes = nextUrl.pathname.includes("/my-notes");
+      const isOnMyNotes = nextUrl.pathname.startsWith("/my-notes");
       if (isOnSignup && !isLoggedIn) {
         return true;
       }
