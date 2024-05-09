@@ -4,6 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 import LogoutButton from "@/(components)/logoutButton";
 import { auth } from "../auth";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,23 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <Head>
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:title" content="MyNotes" />
+        <meta property="og:description" content="Create your notes easily" />
+        <meta
+          property="og:url"
+          content="https://my-notes-amjed-nazzals-projects.vercel.app/"
+        />
+        <meta property="og:site_name" content="MyNotes" />
+        <meta
+          property="og:image"
+          content="https://my-notes-8dlcsw2x6-amjed-nazzals-projects.vercel.app/opengraph-image.jpg"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/jpg" />
+      </Head>
       <body
         style={{ backgroundColor: "#3e3e42", minHeight: " 100vh" }}
         className={inter.className}
