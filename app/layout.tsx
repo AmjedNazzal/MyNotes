@@ -8,11 +8,6 @@ import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "MyNotes",
-  description: "Create your notes easily",
-};
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -23,7 +18,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <Head>
+      <head>
         <meta property="og:locale" content="en_US" />
         <meta property="og:title" content="MyNotes" />
         <meta property="og:description" content="Create your notes easily" />
@@ -39,7 +34,7 @@ export default async function RootLayout({
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/jpg" />
-      </Head>
+      </head>
       <body
         style={{ backgroundColor: "#3e3e42", minHeight: " 100vh" }}
         className={inter.className}
