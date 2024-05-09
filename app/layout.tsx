@@ -29,7 +29,7 @@ export default async function RootLayout({
         <meta property="og:site_name" content="MyNotes" />
         <meta
           property="og:image"
-          content="https://my-notes-8dlcsw2x6-amjed-nazzals-projects.vercel.app/opengraph-image.jpg"
+          content="https://my-notes-amjed-nazzals-projects.vercel.app/opengraph-image.jpg"
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
