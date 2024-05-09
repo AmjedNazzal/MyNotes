@@ -51,20 +51,28 @@ export default function Tutorial({
             )}
             {step === 3 && (
               <>
+                <p>View your note</p>
+                <p>
+                  Click on your note description to view it&rsquo;s content!
+                </p>
+              </>
+            )}
+            {step === 4 && (
+              <>
                 <p>I hope you enjoy MyNotes!</p>
               </>
             )}
             <div className="flex items-center justify-center">
               <button
                 onClick={() => {
-                  if (step < 3) {
+                  if (step < 4) {
                     setStep(step + 1);
                   } else {
                     handleTutotialEnd();
                   }
                 }}
               >
-                {step < 3 ? "Next" : "Done"}
+                {step < 4 ? "Next" : "Done"}
               </button>
             </div>
           </div>

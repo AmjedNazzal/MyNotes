@@ -5,7 +5,10 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { fetchNotes, DeleteNote, MarkTutorialDone } from "@/lib/actions";
 import Tutorial from "@/(components)/tutorial";
-import { MoveRightIcon } from "lucide-react";
+import { MoveRightIcon, MoveDownIcon } from "lucide-react";
+import NoteViewPortal from "@/(components)/noteViewPortal";
+import TutorialPortal from "@/(components)/tutorialPortal";
+import DeleteConfirmationPortal from "@/(components)/deleteConfirmationPortal";
 
 interface Note {
   author: string;
@@ -17,15 +20,21 @@ interface Note {
   _id: string;
 }
 
-type NotesType = [Note] | [] | undefined;
+type NotesType = [Note] | undefined;
 
 export default function Home() {
   const router = useRouter();
-  const [notes, setNotes] = useState<NotesType>([]);
+  const [notes, setNotes] = useState<NotesType>(undefined);
   const [noteToDeleteID, setNoteToDeleteID] = useState("");
   const [shouldShowWarning, setShouldShowWarning] = useState(false);
   const [shouldShowTutorial, setShouldShowTutorial] = useState(false);
   const [step, setStep] = useState(0);
+  const [isNoteViewModalOpen, setIsNoteViewModalOpen] = useState(false);
+  const [noteViewData, setNoteViewData] = useState({
+    content: "",
+    bodyColor: "",
+    textColor: "",
+  });
 
   useEffect(() => {
     async function getNotes() {
@@ -94,6 +103,13 @@ export default function Home() {
     { header: "#F5F5F5", body: "#FFFFFF", text: "#525767" },
   ];
 
+  function truncateText(text: string, maxLength = 150) {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  }
+
   return (
     <>
       <div className="flex relative bg-[#3e3e42] justify-start items-center flex-col gap-10">
@@ -125,15 +141,18 @@ export default function Home() {
             </>
           )}
         </div>
+        {!notes ||
+          (notes && notes.length <= 0 && (
+            <h1 className="text-gray-300 text-[24px] opacity-50">
+              No notes added
+            </h1>
+          ))}
         <div className="flex flex-col w-full justify-center items-center xl:grid xl:grid-cols-2 gap-10 px-20 pb-10">
           {notes &&
             notes.map((note: Note, index: number) => {
               const colorIndex = index % colors.length;
               return (
-                <div
-                  key={index}
-                  className="flex w-full relative flex-col shadow-[0px_2px_2px_2px_#00000024] p-0"
-                >
+                <div key={index} className="flex w-full relative flex-col">
                   <div
                     style={{
                       zIndex: shouldShowTutorial && step === 2 ? "100" : "",
@@ -192,16 +211,59 @@ export default function Home() {
                       {note.title}
                     </h1>
                   </div>
+                  {shouldShowTutorial && step === 3 && (
+                    <div
+                      style={{
+                        zIndex: shouldShowTutorial && step === 3 ? "100" : "",
+                      }}
+                      className="absolute top-[-50%]"
+                    >
+                      <MoveDownIcon size={150} color="#fdd40a" />
+                    </div>
+                  )}
+
                   <div
                     style={{ backgroundColor: colors[colorIndex].body }}
-                    className="flex flex-col pt-7 pb-4 px-7 gap-7 rounded-b-[10px]"
+                    className="flex flex-col flex-wrap text-wrap pt-7 pb-4 px-7 h-[120px] justify-between rounded-b-[10px] overflow-hidden cursor-pointer"
                   >
-                    <p
-                      style={{ color: colors[colorIndex].text }}
-                      className="font-[400] text-[12px] leading-[16px]"
-                    >
-                      {note.description}
-                    </p>
+                    {shouldShowTutorial && step === 3 ? (
+                      <>
+                        <p
+                          style={{
+                            color: colors[colorIndex].text,
+                            wordBreak: "break-word",
+                            zIndex:
+                              shouldShowTutorial && step === 3 ? "100" : "",
+                            backgroundColor:
+                              step === 3 ? "rgba(255,255,255,0.5)" : "",
+                          }}
+                          className="flex font-[400] text-wrap text-[12px] leading-[16px]"
+                        >
+                          {truncateText(note.description)}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p
+                          onClick={() => {
+                            setNoteViewData({
+                              content: note.description,
+                              bodyColor: colors[colorIndex].body,
+                              textColor: colors[colorIndex].text,
+                            });
+                            setIsNoteViewModalOpen(true);
+                          }}
+                          style={{
+                            color: colors[colorIndex].text,
+                            wordBreak: "break-word",
+                          }}
+                          className="flex cursor-pointer font-[400] text-wrap text-[12px] leading-[16px]"
+                        >
+                          {truncateText(note.description)}
+                        </p>
+                      </>
+                    )}
+
                     <div>
                       <hr className="mb-3"></hr>
                       <p
@@ -217,13 +279,13 @@ export default function Home() {
             })}
         </div>
       </div>
-      {shouldShowWarning && (
+      <DeleteConfirmationPortal isModalOpen={shouldShowWarning}>
         <div className="flex absolute top-0 text-white w-full h-full justify-center items-center">
           <div
             className="flex absolute w-full h-full bg-[#252526] opacity-80"
             onClick={() => setShouldShowWarning(false)}
           ></div>
-          <div className="flex xl:w-[40%] h-[30%] bg-[#3e3e42] absolute flex-col px-10 py-10 items-center justify-between rounded-md">
+          <div className="flex xl:w-[30%] h-[30%] bg-[#3e3e42] absolute flex-col px-5 py-10 items-center justify-between rounded-md">
             <h1>Are you sure you want to delete this item?</h1>
             <div className="flex gap-10 justify-center">
               <button
@@ -241,14 +303,32 @@ export default function Home() {
             </div>
           </div>
         </div>
-      )}
-      {shouldShowTutorial && (
+      </DeleteConfirmationPortal>
+      <TutorialPortal isModalOpen={shouldShowTutorial}>
         <Tutorial
           step={step}
           setStep={setStep}
           handleTutotialEnd={handleTutotialEnd}
         />
-      )}
+      </TutorialPortal>
+      <NoteViewPortal
+        isModalOpen={isNoteViewModalOpen}
+        closeModal={() => setIsNoteViewModalOpen(false)}
+      >
+        <textarea
+          className="flex w-full h-full resize-none rounded-md py-10 px-5 text-white"
+          style={{
+            backgroundColor: noteViewData.bodyColor,
+            color: noteViewData.textColor,
+          }}
+          name="description"
+          id="description"
+          placeholder="Description"
+          value={noteViewData.content}
+          readOnly
+          required
+        />
+      </NoteViewPortal>
     </>
   );
 }

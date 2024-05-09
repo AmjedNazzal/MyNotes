@@ -112,7 +112,7 @@ export default function SignupForm() {
             }}
             className="text-[18px]"
           >
-            Easy to use and simple
+            Easy and simple to use
           </p>
           <div className="flex flex-col w-full">
             <form

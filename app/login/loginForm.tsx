@@ -83,7 +83,7 @@ export default function LoginForm() {
                   href="/login/recover/[step]"
                   as={`/login/recover/step-one`}
                 >
-                  click here
+                  Click here
                 </Link>
               </p>
             </div>
